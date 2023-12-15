@@ -1,0 +1,163 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Ephemeral Environment Deployment
+
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: Must be the name of an existing EC2 KeyPair.
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: true
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  GatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+  RouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref RouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  SubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref RouteTable
+
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow access to instances
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8088
+          ToPort: 8088
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 39092
+          ToPort: 39092
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 27017
+          ToPort: 27017
+          CidrIp: 0.0.0.0/0
+
+  GrafanaInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-06aa3f7caf3a30282  # Replace with the actual AMI ID for Ubuntu 20.04
+      InstanceType: t2.medium
+      KeyName: !Ref KeyName
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds: [!Ref SecurityGroup]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 32
+
+  SupersetInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-06aa3f7caf3a30282
+      InstanceType: t2.medium
+      KeyName: !Ref KeyName
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds: [!Ref SecurityGroup]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 64
+
+  SimulatorInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-06aa3f7caf3a30282
+      InstanceType: t2.2xlarge
+      KeyName: !Ref KeyName
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds: [!Ref SecurityGroup]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 32
+
+  RedpandaInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-06aa3f7caf3a30282
+      InstanceType: t2.2xlarge
+      KeyName: !Ref KeyName
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds: [!Ref SecurityGroup]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 128
+
+  MongoDBInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-06aa3f7caf3a30282
+      InstanceType: t2.2xlarge
+      KeyName: !Ref KeyName
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds: [!Ref SecurityGroup]
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 128
+
+Outputs:
+  GrafanaIPAddress:
+    Description: Public IP address of the Grafana instance
+    Value: !GetAtt GrafanaInstance.PublicIp
+
+  SupersetIPAddress:
+    Description: Public IP address of the Superset instance
+    Value: !GetAtt SupersetInstance.PublicIp
+
+  SimulatorIPAddress:
+    Description: Public IP address of the Simulator instance
+    Value: !GetAtt SimulatorInstance.PublicIp
+
+  RedpandaIPAddress:
+    Description: Public IP address of the Redpanda instance
+    Value: !GetAtt RedpandaInstance.PublicIp
+
+  MongoDBIPAddress:
+    Description: Public IP address of the MongoDB instance
+    Value: !GetAtt MongoDBInstance.PublicIp
