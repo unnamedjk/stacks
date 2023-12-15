@@ -1,0 +1,3 @@
+stacks:
+  - name: "Order Management"
+    url: "https://raw.githubusercontent.com/unnamedjk/stacks/main/order-management.yaml"
