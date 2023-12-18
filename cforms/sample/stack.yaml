@@ -102,14 +102,14 @@ Resources:
           sudo git clone https://github.com/unnamedjk/docker-stacks /repo
           cd /repo/redpanda
           # Set env variables
-          sudo export AWS_PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
-          sudo export AWS_PUBLIC_HOSTNAME=$(curl http://169.254.169.254/latest/meta-data/public-hostname)
+          export AWS_PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
+          export AWS_PUBLIC_HOSTNAME=$(curl http://169.254.169.254/latest/meta-data/public-hostname)
           # Perform envsubst
           envsubst '${!AWS_PUBLIC_IP} ${!AWS_PUBLIC_HOSTNAME}' < docker-compose.tpl > /tmp/docker-compose.yaml
           # Move updated docker-compose back to original location
           sudo mv /tmp/docker-compose.yaml .
           # Start Redpanda
-          sudo docker compose up -f /repo/redpanda/docker-compose.yaml -d
+          sudo docker compose -f /repo/redpanda/docker-compose.yaml up -d
         
 Outputs:
   SDBInitScript:
