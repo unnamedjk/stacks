@@ -1,3 +1,5 @@
 stacks:
   - name: "Order Management"
-    url: "https://raw.githubusercontent.com/unnamedjk/stacks/main/order-management.yaml"
+    url: "https://raw.githubusercontent.com/unnamedjk/stacks/main/cforms/order-management/stack.yaml"
+  - name: "Sample"
+    url: "https://raw.githubusercontent.com/unnamedjk/stacks/main/cforms/sample/stack.yaml"

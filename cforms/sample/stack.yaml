@@ -111,8 +111,10 @@ Resources:
           # Start Redpanda
           sudo docker compose up -f /repo/redpanda/docker-compose.yaml -d
         
-
 Outputs:
+  SDBInitScript:
+    Description: The url location of the SQL init script template to be executed after standing up the stack
+    Value: !Sub "https://foobar.com"
   RedpandaIPAddress:
     Description: Public IP address of the Redpanda instance
     Value: !GetAtt RedpandaInstance.PublicIp
