@@ -20,9 +20,6 @@ Resources:
       CidrBlock: 10.0.0.0/16
       EnableDnsSupport: true
       EnableDnsHostnames: true
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-vpc"
 
   PublicSubnet:
     Type: AWS::EC2::Subnet
@@ -51,18 +48,12 @@ Resources:
       RouteTableId: !Ref RouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-gw"
 
   SubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicSubnet
       RouteTableId: !Ref RouteTable
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-rt-assoc"
 
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -116,9 +107,6 @@ Resources:
           sudo mv /tmp/docker-compose.yaml .
           # Start Redpanda
           sudo docker compose up -f ~/repo/redpanda/docker-compose.yaml -d
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-redpanda"
 
 Outputs:
   RedpandaIPAddress:
