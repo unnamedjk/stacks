@@ -96,17 +96,18 @@ Resources:
             VolumeSize: 128
       UserData:
         Fn::Base64: !Sub |
-            #!/bin/bash
-            sudo apt install -y git
-            # Clone redpanda stack
-            sudo git clone https://github.com/unnamedjk/docker-stacks repo
-            cd repo/redpanda
-            # Perform envsubst
-            envsubst '$${AWS_PUBLIC_IP} $${AWS_PUBLIC_HOSTNAME}' < docker-compose.tpl > /tmp/docker-compose.yaml
-            # Move updated docker-compose back to original location
-            sudo mv /tmp/docker-compose.yaml .
-            # Start Redpanda
-            sudo docker compose up -d
+          #!/bin/bash
+          sudo apt install -y git
+          # Clone redpanda stack
+          sudo git clone https://github.com/unnamedjk/docker-stacks repo
+          cd repo/redpanda
+          # Perform envsubst
+          envsubst '$${!AWS_PUBLIC_IP} $${!AWS_PUBLIC_HOSTNAME}' < docker-compose.tpl > /tmp/docker-compose.yaml
+          # Move updated docker-compose back to original location
+          sudo mv /tmp/docker-compose.yaml .
+          # Start Redpanda
+          sudo docker compose up -f ~/repo/redpanda/docker-compose.yaml -d
+        
 
 Outputs:
   RedpandaIPAddress:
