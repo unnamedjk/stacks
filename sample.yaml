@@ -35,7 +35,6 @@ Resources:
           Value: !Sub "${AWS::StackName}-subnet"
   InternetGateway:
     Type: AWS::EC2::InternetGateway
-    Properties:
 
   GatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
