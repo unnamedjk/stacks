@@ -6,6 +6,7 @@ Parameters:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances
     Type: AWS::EC2::KeyPair::KeyName
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
+    Default: OrderMgmt
 
 Resources:
   VPC:
@@ -78,7 +79,7 @@ Resources:
   RedpandaInstance:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId:  ami-0c8a60caed22607cd
+      ImageId: ami-0c8a60caed22607cd
       InstanceType: t2.micro
       KeyName: !Ref KeyName
       SubnetId: !Ref PublicSubnet
@@ -94,7 +95,6 @@ Resources:
           # Clone your repository
           git clone https://github.com/unnamedjk/docker-stacks repo
           cd repo
-          
           # Start your application
           docker-compose up -d
 
