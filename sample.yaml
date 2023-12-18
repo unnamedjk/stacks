@@ -30,9 +30,6 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: 10.0.1.0/24
       MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-subnet"
 
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -42,17 +39,11 @@ Resources:
     Properties:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-gw-att"
 
   RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-rt"
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -63,6 +54,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-gw"
+
   SubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
