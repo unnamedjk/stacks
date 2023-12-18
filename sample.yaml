@@ -90,9 +90,7 @@ Resources:
           FromPort: 19092
           ToPort: 19092
           CidrIp: 0.0.0.0/0
-      Tags:
-        - Key: Name
-          Value: !Sub "${AWS::StackName}-sec-group"
+
   RedpandaInstance:
     Type: AWS::EC2::Instance
     Properties:
