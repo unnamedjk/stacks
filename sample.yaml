@@ -108,7 +108,6 @@ Resources:
           sudo mv /tmp/docker-compose.yaml .
           # Start Redpanda
           sudo docker compose up -f ~/repo/redpanda/docker-compose.yaml -d
-        - {}
         
 
 Outputs:
