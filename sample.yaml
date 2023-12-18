@@ -113,3 +113,6 @@ Outputs:
   RedpandaIPAddress:
     Description: Public IP address of the Redpanda instance
     Value: !GetAtt RedpandaInstance.PublicIp
+  RedpandaHostname:
+    Description: Public IP address of the Redpanda instance
+    Value: !GetAtt RedpandaInstance.PublicDnsName
