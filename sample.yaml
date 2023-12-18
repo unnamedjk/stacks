@@ -35,6 +35,7 @@ Resources:
           Value: !Sub "${AWS::StackName}-subnet"
   InternetGateway:
     Type: AWS::EC2::InternetGateway
+    Properties:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-igw"
