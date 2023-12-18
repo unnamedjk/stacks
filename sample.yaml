@@ -95,8 +95,7 @@ Resources:
           Ebs:
             VolumeSize: 128
       UserData:
-        Fn::Base64: !Sub
-        - |
+        Fn::Base64: !Sub |
           #!/bin/bash
           sudo apt install -y git
           # Clone redpanda stack
