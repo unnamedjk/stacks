@@ -33,6 +33,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${AWS::StackName}-subnet"
+
   InternetGateway:
     Type: AWS::EC2::InternetGateway
 
