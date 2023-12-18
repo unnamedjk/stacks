@@ -8,6 +8,11 @@ Parameters:
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
     Default: OrderMgmt
 
+  TTL:
+    Description: The amount of time you need this environment up and running for (in hours)
+    Type: Number
+    Default: 4
+
 Resources:
   VPC:
     Type: AWS::EC2::VPC

@@ -8,6 +8,11 @@ Parameters:
     ConstraintDescription: Must be the name of an existing EC2 KeyPair.
     Default: OrderMgmt
 
+  TTL:
+    Description: The amount of time you need this environment up and running for (in hours)
+    Type: Number
+    Default: 4
+
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -15,6 +20,9 @@ Resources:
       CidrBlock: 10.0.0.0/16
       EnableDnsSupport: true
       EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-vpc"
 
   PublicSubnet:
     Type: AWS::EC2::Subnet
@@ -22,20 +30,31 @@ Resources:
       VpcId: !Ref VPC
       CidrBlock: 10.0.1.0/24
       MapPublicIpOnLaunch: true
-
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-subnet"
   InternetGateway:
     Type: AWS::EC2::InternetGateway
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-igw"
 
   GatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-gw-att"
 
   RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
       VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-rt"
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -43,12 +62,17 @@ Resources:
       RouteTableId: !Ref RouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
-
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-gw"
   SubnetRouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicSubnet
       RouteTableId: !Ref RouteTable
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-rt-assoc"
 
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup
@@ -61,21 +85,24 @@ Resources:
           ToPort: 22
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 3000
-          ToPort: 3000
+          FromPort: 8080
+          ToPort: 8080
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 8088
-          ToPort: 8088
+          FromPort: 18081
+          ToPort: 18081
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 39092
-          ToPort: 39092
+          FromPort: 18082
+          ToPort: 18082
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
-          FromPort: 9092
-          ToPort: 9092
+          FromPort: 19092
+          ToPort: 19092
           CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-sec-group"
   RedpandaInstance:
     Type: AWS::EC2::Instance
     Properties:
@@ -91,12 +118,19 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
-          apt install -y git
-          # Clone your repository
-          git clone https://github.com/unnamedjk/docker-stacks repo
-          cd repo
-          # Start your application
-          docker-compose up -d
+          sudo apt install -y git
+          # Clone redpanda stack
+          sudo git clone https://github.com/unnamedjk/docker-stacks repo
+          cd repo/redpanda
+          # Perform envsubst
+          envsubst '${AWS_PUBLIC_IP} ${AWS_PUBLIC_HOSTNAME}' < docker-compose.tpl > /tmp/docker-compose.yaml
+          # Move updated docker-compose back to original location
+          sudo mv /tmp/docker-compose.yaml .
+          # Start Redpanda
+          sudo docker compose up -f ~/repo/redpanda/docker-compose.yaml -d
+      Tags:
+        - Key: Name
+          Value: !Sub "${AWS::StackName}-redpanda"
 
 Outputs:
   RedpandaIPAddress:
