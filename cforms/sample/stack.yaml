@@ -16,7 +16,25 @@ Parameters:
   WorkspaceDetails:
     Description: JSON string of workspace layout
     Type: String
-    Default: '[{"workspace_1": {"size": "00", "enable_kai": false}}, {"workspace_2": {"size": "2", "enable_kai": true}}]'
+    Default: '{"workspaces":[{"enableKai":true,"name":"workspace_1","size":"S-0"},{"enableKai":false,"name":"workspace_2","size":"S-00"}]}'
+
+  WorkspaceEndpoint:
+    Description: The endpoint_url of the workspaceGroup
+    Type: String
+  
+  WorkspaceUsername:
+    Description: The username for logging into the workspace
+    Type: String
+    Default: 'admin'
+  
+  WorkspacePassword:
+    Description: The password for the user provided to login to the workspace
+    Type: String
+    Default: 'SingleStore1'
+
+  WorkspaceMongoConn:
+    Description: The connection string for connecting to SingleStore Kai
+    Type: String
 
 Resources:
   VPC:
