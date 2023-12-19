@@ -37,7 +37,7 @@ Resources:
     DependsOn: 
       - VPC
       - InternetGateway
-Resources:
+
   RouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
