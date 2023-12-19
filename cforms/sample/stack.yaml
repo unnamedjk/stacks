@@ -14,9 +14,9 @@ Parameters:
     Default: 4
 
   WorkspaceDetails:
-    Description: This should be a json string of how you would like the workspace layout to be
+    Description: JSON string of workspace layout
     Type: String
-    Default: [{"workspace_1":{"size":"00","enable_kai": false}},{"workspace_2":{"size":"2","enable_kai": true}}]
+    Default: '[{"workspace_1": {"size": "00", "enable_kai": false}}, {"workspace_2": {"size": "2", "enable_kai": true}}]'
 
 Resources:
   VPC:
