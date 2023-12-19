@@ -111,6 +111,9 @@ Outputs:
   SDBInitScript:
     Description: The url location of the SQL init script template to be executed after standing up the stack
     Value: !Sub "https://raw.githubusercontent.com/unnamedjk/stacks/main/cforms/sample/init.sql"
+  ManualMD:
+    Description: The url location of the manual markdown file
+    Value: !Sub "https://raw.githubusercontent.com/unnamedjk/stacks/main/cforms/sample/manual.md"
   RedpandaIPAddress:
     Description: Public IP address of the Redpanda instance
     Value: !GetAtt RedpandaInstance.PublicIp
