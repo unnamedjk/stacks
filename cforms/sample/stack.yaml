@@ -104,8 +104,6 @@ Resources:
           # Set env variables
           echo "AWS_PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)" > /repo/redpanda/.env
           echo "AWS_PUBLIC_HOSTNAME=$(curl http://169.254.169.254/latest/meta-data/public-hostname)" >> /repo/redpanda/.env
-          # Move updated docker-compose back to original location
-          sudo mv /tmp/docker-compose.yaml .
           # Start Redpanda
           sudo docker compose -f /repo/redpanda/docker-compose.yaml up -d
         
