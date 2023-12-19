@@ -13,6 +13,11 @@ Parameters:
     Type: Number
     Default: 4
 
+  WorkspaceDetails:
+    Description: This should be a json string of how you would like the workspace layout to be
+    Type: String
+    Default: [{"workspace_1":{"size":"00","enable_kai":false}},{"workspace_2":{"size":"2","enable_kai":false}}]
+
 Resources:
   VPC:
     Type: AWS::EC2::VPC
