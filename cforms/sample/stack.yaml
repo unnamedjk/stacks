@@ -18,22 +18,8 @@ Parameters:
     Type: String
     Default: '{"workspaces":[{"enableKai":true,"name":"workspace_1","size":"S-0"},{"enableKai":false,"name":"workspace_2","size":"S-00"}]}'
 
-  WorkspaceEndpoint:
-    Description: The endpoint_url of the workspaceGroup
-    Type: String
-  
-  WorkspaceUsername:
-    Description: The username for logging into the workspace
-    Type: String
-    Default: 'admin'
-  
-  WorkspacePassword:
-    Description: The password for the user provided to login to the workspace
-    Type: String
-    Default: 'SingleStore1'
-
-  WorkspaceMongoConn:
-    Description: The connection string for connecting to SingleStore Kai
+  SingleStoreConnDetails:
+    Description: This is a dynamic data that will be provided by the demo launcher.
     Type: String
 
 Resources:
