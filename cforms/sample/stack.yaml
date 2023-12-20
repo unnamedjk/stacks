@@ -16,7 +16,7 @@ Parameters:
   WorkspaceDetails:
     Description: JSON string of workspace layout
     Type: String
-    Default: '{"workspaces":[{"enableKai":true,"name":"workspace_1","size":"S-0"},{"enableKai":false,"name":"workspace_2","size":"S-00"}]}'
+    Default: '{"workspaces":[{"enableKai":true,"name":"ws01","size":"S-00"},{"enableKai":false,"name":"ws0","size":"S-00"}]}'
 
   SingleStoreConnDetails:
     Description: This is a dynamic data that will be provided by the demo launcher.
